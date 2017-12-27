@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:44:05 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/27 16:07:49 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/27 17:09:13 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct	s_data
 }				t_data;
 
 int				display_files(t_data *data);
+void			get_coordinates(t_data *data);
 int				input_key(t_data *data, const char *const buff);
 int				restore_configuration(t_data *data);
 void			signal_handler(int signo);

@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/26 18:28:37 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/27 17:07:31 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/27 17:49:44 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,8 @@ static void			column_display(t_data *data, int column, unsigned short col,
 	EXIT_PROTECT(move = tgetstr("cm", NULL));
 	x = (col - data->width * data->columns) / (data->columns + 1);
 	data->padding = x;
-	data->x = data->padding + 2;
+	get_coordinates(data);
 	x = column * data->width + data->padding * (column + 1) + 2;
-	data->y = 2;
 	y = 2;
 	column = -1;
 	while (++column < data->rows + extra)

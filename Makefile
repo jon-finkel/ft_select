@@ -6,7 +6,7 @@
 #    By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/25 23:01:23 by nfinkel           #+#    #+#              #
-#    Updated: 2017/12/27 12:06:38 by nfinkel          ###   ########.fr        #
+#    Updated: 2017/12/27 17:10:21 by nfinkel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,8 +37,8 @@ OBJDIR :=					./build/
 SRCS_DIR :=					./srcs/
 
 #	Sources
-SRC +=						main.c display_files.c signal_handler.c
-SRC +=						input_key.c restore_configuration.c
+SRC +=						main.c signal_handler.c restore_configuration.c
+SRC +=						display_files.c get_coordinates.c input_key.c
 
 OBJECTS =					$(patsubst %.c,$(OBJDIR)%.o,$(SRCS))
 
