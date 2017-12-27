@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/26 18:28:37 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/27 16:08:35 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/27 17:07:31 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ static void			column_display(t_data *data, int column, unsigned short col,
 int					display_files(t_data *data)
 {
 	char				*move;
-	char				*str;
 	int					columns;
 	short				extra;
 	struct winsize		w;
@@ -93,7 +92,5 @@ int					display_files(t_data *data)
 		if (extra)
 			--extra;
 	}
-	PROTECT(str = tgetstr("vi", NULL), -1);
-	ft_putstr(str);
 	return (0);
 }
