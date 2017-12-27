@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal_handler.c                                   :+:      :+:    :+:   */
+/*   restore_configuration.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/26 17:24:29 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/27 14:51:59 by nfinkel          ###   ########.fr       */
+/*   Created: 2017/12/27 11:47:09 by nfinkel           #+#    #+#             */
+/*   Updated: 2017/12/27 16:10:58 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_select.h"
 
-void			signal_handler(int signo)
+int			restore_configuration(t_data *data)
 {
-	extern t_data		*g_data;
+	char		*str;
 
-	if (signo == SIGINT)
-	{
-		restore_configuration(g_data);
-		exit(EXIT_SUCCESS);
-	}
-	else if (signo == SIGWINCH && display_files(g_data) == -1)
-	{
-		restore_configuration(g_data);
-		exit(EXIT_FAILURE);
-	}
+	ft_cleanup(2, E_APTR, data->argv);
+	free(data);
+	PROTECT(str = tgetstr("ve", NULL), -1);
+	ft_putstr(str);
+	ft_putstr("\033[?1049h");
+	return (0);
 }

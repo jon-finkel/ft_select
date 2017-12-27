@@ -6,7 +6,7 @@
 #    By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/25 23:01:23 by nfinkel           #+#    #+#              #
-#    Updated: 2017/12/26 18:29:17 by nfinkel          ###   ########.fr        #
+#    Updated: 2017/12/27 12:06:38 by nfinkel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SRCS_DIR :=					./srcs/
 
 #	Sources
 SRC +=						main.c display_files.c signal_handler.c
+SRC +=						input_key.c restore_configuration.c
 
 OBJECTS =					$(patsubst %.c,$(OBJDIR)%.o,$(SRCS))
 

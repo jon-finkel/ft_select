@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:43:32 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/26 23:27:51 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/27 16:03:32 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,15 @@ static t_data			*initialize_data(char **argv, int argc)
 	PROTECT(data->argv = (char **)malloc(sizeof(char *) * argc), NULL);
 	data->argc = argc - 1;
 	data->argv[data->argc] = NULL;
+	data->pos = 0;
+	data->curr_column = 0;
 	data->width = 0;
 	while (--argc)
 	{
 		PROTECT(data->argv[argc - 1] = ft_strdup(argv[argc]), NULL);
 		data->width = _MAX(data->width, ft_strlen(argv[argc]));
 	}
+	++data->width;
 	return (data);
 }
 
@@ -58,15 +61,17 @@ int						main(int argc, char *argv[])
 	setlocale(LC_ALL, "");
 	if (argc == 1)
 		ft_kill("usage: ft_select: argument1 [argument2 ...]");
+	ft_putstr("\033[?1049l");
 	NEG_PROTECT(initialize_termios(), -1);
 	PROTECT(g_data = initialize_data(argv, argc), -1);
 	NEG_PROTECT(display_files(g_data), -1);
-	ft_interceptor(&signal_handler, 1, SIGWINCH);
+	ft_interceptor(&signal_handler, 2, SIGINT, SIGWINCH);
 	while (101010)
 	{
 		ft_memset(buff, '\0', 4);
 		NEG_PROTECT(read(STDIN_FILENO, &buff, 3), -1);
-		ft_printf(buff);
+		if (ft_strequ(buff, "\033") || input_key(g_data, buff) == -1)
+			break ;
 	}
-	return (0);
+	return (restore_configuration(g_data));
 }
