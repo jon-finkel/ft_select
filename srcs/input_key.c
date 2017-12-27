@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/27 12:06:55 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/27 16:25:00 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/27 16:56:48 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static void			move_cursor_left(t_data *data)
 		move_cursor_up(data);
 	else if (!data->pos && data->extra)
 	{
-		data->pos = data->extra * data->rows + 1;
+		data->pos = data->extra * (data->rows + (data->extra ? 1 : 0)) - 1;
 		data->x = (data->width * (data->extra -1));
 		data->x += data->extra * data->padding + 2;
 		data->y = data->rows + 2;
