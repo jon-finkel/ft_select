@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/27 11:47:09 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/28 23:10:36 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/28 23:37:34 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@ int			restore_configuration(t_data *data, t_flag flag)
 	ft_putstr_fd(str, data->fd);
 	ft_putstr_fd("\033[?1049l", data->fd);
 	close(data->fd);
-	free(data->select);
-	free(data);
 	if (flag == E_OUTPUT)
 		ft_putstr_fd(data->string, STDOUT_FILENO);
-	else if (flag == E_EXIT_SUCCESS)
+	if (flag == E_EXIT_SUCCESS)
 		exit(EXIT_SUCCESS);
 	else if (flag == E_EXIT_FAILURE)
 		exit(EXIT_FAILURE);
