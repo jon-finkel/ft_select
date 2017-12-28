@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/26 18:28:37 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/28 21:48:48 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/28 23:29:46 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,21 +63,25 @@ static int			color_display(t_data *data, const char *move, const int fd)
 	char			*path;
 	struct stat		w_stat;
 
-	PROTECT(path = ft_strnew(MAXPATHLEN), -1);
-	PROTECT(path = getcwd(path, MAXPATHLEN), -1);
+	PROTECT(path = getcwd(NULL, MAXPATHLEN), -1);
 	NEG_PROTECT(ft_asprintf(&file, "%s/%s", path, data->argv[data->argc]), -1);
-	NEG_PROTECT(stat(file, &w_stat), -1);
+	if (ft_strchr(data->argv[data->argc], '/'))
+		NEG_PROTECT(lstat(data->argv[data->argc], &w_stat), -1);
+	else
+		NEG_PROTECT(lstat(file, &w_stat), -1);
 	ft_cleanup(4, E_PTR, file, E_PTR, path);
-	if (data->select[data->argc] == TRUE)
-		flag_reverse_video(E_ENABLE, fd);
-	if (S_ISDIR(w_stat.st_mode))
+	if (data->select[data->argc] == FALSE && S_ISDIR(w_stat.st_mode))
 		ft_dprintf(fd, "%s{1Gx}%s{eoc}", move, data->argv[data->argc]);
-	else if (w_stat.st_mode & S_IXUSR)
+	else if (data->select[data->argc] == FALSE && S_ISLNK(w_stat.st_mode))
+		ft_dprintf(fd, "%s{fx}%s{eoc}", move, data->argv[data->argc]);
+	else if (data->select[data->argc] == FALSE && S_ISBLK(w_stat.st_mode))
+		ft_dprintf(fd, "%s{eg}%s{eoc}", move, data->argv[data->argc]);
+	else if (data->select[data->argc] == FALSE && S_ISCHR(w_stat.st_mode))
+		ft_dprintf(fd, "%s{ed}%s{eoc}", move, data->argv[data->argc]);
+	else if (data->select[data->argc] == FALSE && w_stat.st_mode & S_IXUSR)
 		ft_dprintf(fd, "%s{Dx}%s{eoc}", move, data->argv[data->argc]);
 	else
 		ft_dprintf(fd, "%s%s", move, data->argv[data->argc]);
-	if (data->select[data->argc] == TRUE)
-		flag_reverse_video(E_DISABLE, fd);
 	return (0);
 }
 
@@ -96,8 +100,12 @@ static int			column_display(t_data *data, int column, short extra)
 	{
 		if (data->argc == data->pos)
 			flag_underline(E_ENABLE, data->fd);
+		if (data->select[data->argc] == TRUE)
+			flag_reverse_video(E_ENABLE, data->fd);
 		PROTECT(str = tgoto(move, x, ++y), -1);
 		NEG_PROTECT(color_display(data, str, data->fd), -1);
+		if (data->select[data->argc] == TRUE)
+			flag_reverse_video(E_DISABLE, data->fd);
 		if (data->argc == data->pos)
 			flag_underline(E_DISABLE, data->fd);
 		++data->argc;

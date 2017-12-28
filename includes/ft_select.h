@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:44:05 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/28 21:45:24 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/28 22:48:12 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@ typedef enum	s_flag
 	E_DYNAMIC,
 	E_ENABLE,
 	E_DISABLE,
+	E_OUTPUT,
 	E_EXIT_SUCCESS,
 	E_EXIT_FAILURE
 }				t_flag;
 
 typedef struct	s_data
 {
-	char		file_name[2048];
+	char		*string;
 	char		**argv;
 	t_bool		*select;
 	int			fd;
