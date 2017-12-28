@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:43:32 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/27 17:01:06 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/28 14:22:38 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,44 +37,27 @@ static int				initialize_termios(void)
 	return (0);
 }
 
-static t_data			*initialize_data(char **argv, int argc)
-{
-	t_data		*data;
-
-	PROTECT(data = (t_data *)malloc(sizeof(t_data)), NULL);
-	PROTECT(data->argv = (char **)malloc(sizeof(char *) * argc), NULL);
-	data->argc = argc - 1;
-	data->argv[data->argc] = NULL;
-	data->pos = 0;
-	data->curr_column = 0;
-	data->width = 0;
-	while (--argc)
-	{
-		PROTECT(data->argv[argc - 1] = ft_strdup(argv[argc]), NULL);
-		data->width = _MAX(data->width, ft_strlen(argv[argc]));
-	}
-	++data->width;
-	return (data);
-}
-
 int						main(int argc, char *argv[])
 {
-	char		buff[4];
-
 	setlocale(LC_ALL, "");
 	if (argc == 1)
 		ft_kill("usage: ft_select: argument1 [argument2 ...]");
-	ft_putstr("\033[?1049l");
 	NEG_PROTECT(initialize_termios(), -1);
-	PROTECT(g_data = initialize_data(argv, argc), -1);
-	NEG_PROTECT(display_files(g_data), -1);
-	ft_interceptor(&signal_handler, 2, SIGINT, SIGWINCH);
-	while (101010)
+	ft_putstr("\033[?1049l");
+	PROTECT(g_data = (t_data *)malloc(sizeof(t_data)), -1);
+	PROTECT(g_data->argv = (char **)malloc(sizeof(char *) * argc), -1);
+	PROTECT(g_data->select = (t_bool *)malloc(sizeof(t_bool) * (argc - 1)), -1);
+	g_data->argc = argc - 1;
+	g_data->argv[g_data->argc] = NULL;
+	g_data->pos = 0;
+	g_data->curr_column = 0;
+	g_data->width = 0;
+	while (--argc)
 	{
-		ft_memset(buff, '\0', 4);
-		NEG_PROTECT(read(STDIN_FILENO, &buff, 3), -1);
-		if (ft_strequ(buff, "\033") || input_key(g_data, buff) == -1)
-			break ;
+		PROTECT(g_data->argv[argc - 1] = ft_strdup(argv[argc]), -1);
+		g_data->width = _MAX(g_data->width, ft_strlen(argv[argc]));
+		g_data->select[g_data->argc] = FALSE;
 	}
-	return (restore_configuration(g_data));
+	++g_data->width;
+	return (loop(g_data));
 }

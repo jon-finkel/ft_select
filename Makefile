@@ -6,7 +6,7 @@
 #    By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/25 23:01:23 by nfinkel           #+#    #+#              #
-#    Updated: 2017/12/27 17:10:21 by nfinkel          ###   ########.fr        #
+#    Updated: 2017/12/28 14:42:10 by nfinkel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,8 +37,10 @@ OBJDIR :=					./build/
 SRCS_DIR :=					./srcs/
 
 #	Sources
-SRC +=						main.c signal_handler.c restore_configuration.c
-SRC +=						display_files.c get_coordinates.c input_key.c
+SRC +=						main.c loop.c signal_handler.c input_arrow.c
+SRC +=						restore_configuration.c get_coordinates.c
+SRC +=						color_output.c display_files.c display_help.c
+SRC +=						flag_reverse_video.c flag_underline.c
 
 OBJECTS =					$(patsubst %.c,$(OBJDIR)%.o,$(SRCS))
 
