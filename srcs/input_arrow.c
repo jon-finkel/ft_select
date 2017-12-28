@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/27 12:06:55 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/28 14:08:46 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/28 21:14:11 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,6 @@ static int			move_cursor_left(t_data *data)
 
 int					input_arrow(t_data *data, const char *const buff)
 {
-	char		*move;
-	char		*str;
-
 	if (ft_strnequ(buff, "\033[", 2))
 	{
 		if (buff[2] == 'A')
@@ -81,9 +78,9 @@ int					input_arrow(t_data *data, const char *const buff)
 			move_cursor_right(data);
 		else if (buff[2] == 'D')
 			move_cursor_left(data);
-		flag_underline(E_ENABLE);
+		flag_underline(E_ENABLE, data->fd);
 		NEG_PROTECT(color_output(data), -1);
-		flag_underline(E_DISABLE);
+		flag_underline(E_DISABLE, data->fd);
 	}
 	return (0);
 }

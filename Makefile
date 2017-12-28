@@ -6,7 +6,7 @@
 #    By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/25 23:01:23 by nfinkel           #+#    #+#              #
-#    Updated: 2017/12/28 14:42:10 by nfinkel          ###   ########.fr        #
+#    Updated: 2017/12/28 19:56:11 by nfinkel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRC +=						main.c loop.c signal_handler.c input_arrow.c
 SRC +=						restore_configuration.c get_coordinates.c
 SRC +=						color_output.c display_files.c display_help.c
 SRC +=						flag_reverse_video.c flag_underline.c
+SRC +=						dynamic_search.c
 
 OBJECTS =					$(patsubst %.c,$(OBJDIR)%.o,$(SRCS))
 
