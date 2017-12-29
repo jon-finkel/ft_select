@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/28 14:03:16 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/29 15:56:45 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/29 16:48:14 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,35 +60,6 @@ static int			toggle_help(t_data *data)
 	return (0);
 }
 
-static int			search_letter(t_data *data, char *buff, int x)
-{
-	char		file[512];
-	int			ret;
-
-	data->status = E_DYNAMIC;
-	while (101010)
-	{
-		if (ft_strequ(buff, "\033") || ft_strequ(buff, "\040"))
-			break ;
-		else if (*buff == '\033')
-		{
-			NEG_PROTECT(input_arrow(data, buff), -1);
-			break ;
-		}
-		else
-		{
-			NEG_PROTECT((ret = dynamic_search(data, file, *buff, &x)), -1);
-			if (ret == 255)
-				break ;
-		}
-		ft_memset(buff, '\0', 4);
-		NEG_PROTECT(read(STDIN_FILENO, buff, 3), -1);
-	}
-	display_files(data);
-	data->status = E_REGULAR;
-	return (0);
-}
-
 int					loop(t_data *data)
 {
 	char			buff[4];
@@ -109,9 +80,10 @@ int					loop(t_data *data)
 		else if (ft_strequ(buff, "\033") || input_arrow(data, buff) == -1)
 			break ;
 		else if ((*buff > '\040' && *buff < '\177')
-			&& search_letter(data, buff, 0) == -1)
+			&& dynamic_search(data, buff, 0) == -1)
 			break ;
-		else if (ft_strequ(buff, "\040") && toggle_element(data, &nb) == -1)
+		else if ((ft_strequ(buff, "\040") || ft_strequ(buff, "\012"))
+			&& toggle_element(data, &nb) == -1)
 			break ;
 	}
 	return (restore_configuration(data, E_DISABLE));
