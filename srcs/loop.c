@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/28 14:03:16 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/29 18:01:21 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/29 18:03:35 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ static int			remove_element(t_data *data, int *nb)
 				if (space == TRUE)
 					ft_strcat(buff, " ");
 				ft_strcat(buff, data->argv[k]);
-				PROTECT(data->string = ft_strjoin(data->string, buff, E_FREE), -1);
+				PROTECT(data->string = ft_strjoin(data->string, buff, E_FREE),\
+					-1);
 				space = TRUE;
 			}
 	}
