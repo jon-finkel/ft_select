@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/26 17:24:29 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/28 20:01:04 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/29 09:17:55 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 static int			check_window_size(t_data *data)
 {
+	char		*str;
+
+	PROTECT(str = tgetstr("cl", NULL), -1);
 	if (data->status == E_HELP)
 		NEG_PROTECT(display_help(data), -1);
 	else

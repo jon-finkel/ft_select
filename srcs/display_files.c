@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/26 18:28:37 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/28 23:29:46 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/29 09:27:03 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int			display_text(t_data *data, char *move, int nb,
 {
 	char		*str;
 	int			k;
+	int			x;
 	wchar_t		hor_line[ws_col];
 
 	k = -1;
@@ -25,9 +26,13 @@ static int			display_text(t_data *data, char *move, int nb,
 	hor_line[k] = L'\0';
 	PROTECT(str = tgoto(move, 1, 0), -1);
 	ft_dprintf(data->fd, "%s%S", str, hor_line);
-	PROTECT(str = tgoto(move, (ws_col - 56) / 2, 0), -1);
-	ft_dprintf(data->fd, "%s {1c}ft_select - an interactive file selector"\
-		", by {1b}Jon Finkel{eoc} ", str);
+	x = (ws_col - (ws_col < 61 ? 11 : 56)) / 2;
+	PROTECT(str = tgoto(move, x, 0), -1);
+	if (ws_col < 61)
+		ft_dprintf(data->fd, "%s {1c}ft_select{eoc} ", str);
+	else
+		ft_dprintf(data->fd, "%s {1c}ft_select - an interactive file selector"\
+			", by {1b}Jon Finkel{eoc} ", str);
 	PROTECT(str = tgoto(move, 1, nb + 3), -1);
 	ft_dprintf(data->fd, "%s%S", str, hor_line);
 	PROTECT(str = tgoto(move, ws_col - 21, nb + 3), -1);

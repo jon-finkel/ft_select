@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:44:05 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/28 22:48:12 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/29 14:47:57 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct	s_data
 int				color_output(t_data *data);
 int				display_files(t_data *data);
 int				display_help(t_data *data);
-int				dynamic_search(t_data *data, char *buff);
+int				dynamic_search(t_data *data, char *file, const char buff, int *x);
 int				flag_reverse_video(t_flag flag, const int fd);
 int				flag_underline(t_flag flag, const int fd);
 void			get_coordinates(t_data *data);
