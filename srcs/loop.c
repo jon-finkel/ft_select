@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/28 14:03:16 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/29 15:27:19 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/29 15:56:45 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ static int			toggle_help(t_data *data)
 
 static int			search_letter(t_data *data, char *buff, int x)
 {
-	char			file[512];
+	char		file[512];
+	int			ret;
 
 	data->status = E_DYNAMIC;
 	while (101010)
@@ -75,7 +76,11 @@ static int			search_letter(t_data *data, char *buff, int x)
 			break ;
 		}
 		else
-			NEG_PROTECT(dynamic_search(data, file, *buff, &x), -1);
+		{
+			NEG_PROTECT((ret = dynamic_search(data, file, *buff, &x)), -1);
+			if (ret == 255)
+				break ;
+		}
 		ft_memset(buff, '\0', 4);
 		NEG_PROTECT(read(STDIN_FILENO, buff, 3), -1);
 	}
@@ -99,7 +104,7 @@ int					loop(t_data *data)
 			delete_element(data, &nb);
 		else if (ft_strequ(buff, "\011") && toggle_help(data) == -1)
 			break ;
-		else if (ft_strequ(buff, "\015"))
+		else if (ft_strequ(buff, "\012"))
 			return (restore_configuration(data, E_OUTPUT));
 		else if (ft_strequ(buff, "\033") || input_arrow(data, buff) == -1)
 			break ;
