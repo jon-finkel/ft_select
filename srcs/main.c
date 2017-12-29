@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:43:32 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/28 23:39:28 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/29 17:02:47 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int					main(int argc, char *argv[])
 	if (argc == 1)
 		ft_kill("usage: ft_select: argument1 [argument2 ...]");
 	PROTECT(g_data = (t_data *)malloc(sizeof(t_data)), -1);
-	PROTECT(g_data->string = ft_strnew(0), -1);
 	PROTECT(g_data->argv = (char **)malloc(sizeof(char *) * argc), -1);
 	PROTECT(g_data->select = (t_bool *)malloc(sizeof(t_bool) * (argc - 1)), -1);
 	g_data->fd = open("/dev/tty", O_RDWR);

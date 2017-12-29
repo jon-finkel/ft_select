@@ -6,37 +6,73 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/28 14:03:16 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/29 16:48:14 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/29 18:01:21 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_select.h"
 
+static int			remove_element(t_data *data, int *nb)
+{
+	char		buff[MAXPATHLEN + 1024];
+	int			k;
+	t_bool		space;
+
+	*nb -= 1;
+	data->select[data->pos] = FALSE;
+	ft_strdel(&data->string);
+	if (*nb > 0)
+	{
+		PROTECT(data->string = ft_strnew(0), -1);
+		space = FALSE;
+		k = -1;
+		while (++k < data->argc)
+			if (data->select[k] == TRUE)
+			{
+				ft_memset(buff, '\0', MAXPATHLEN + 1024);
+				if (space == TRUE)
+					ft_strcat(buff, " ");
+				ft_strcat(buff, data->argv[k]);
+				PROTECT(data->string = ft_strjoin(data->string, buff, E_FREE), -1);
+				space = TRUE;
+			}
+	}
+	return (0);
+}
+
 static int			toggle_element(t_data *data, int *nb)
 {
+	char		buff[MAXPATHLEN + 1024];
+
+	ft_memset(buff, '\0', MAXPATHLEN + 1024);
 	if (data->select[data->pos] == TRUE)
-	{
-		*nb -= 1;
-		data->select[data->pos] = FALSE;
-	}
+		NEG_PROTECT(remove_element(data, nb), -1);
 	else
 	{
 		*nb += 1;
+		if (*nb == 1)
+			PROTECT(data->string = ft_strdup(data->argv[data->pos]), -1);
+		else
+		{
+			ft_strcat(buff, " ");
+			ft_strcat(buff, data->argv[data->pos]);
+			PROTECT(data->string = ft_strjoin(data->string, buff, E_FREE), -1);
+		}
 		data->select[data->pos] = TRUE;
 	}
-	input_arrow(data, "\033[B");
 	flag_underline(E_ENABLE, data->fd);
 	NEG_PROTECT(color_output(data), -1);
 	flag_underline(E_DISABLE, data->fd);
+	input_arrow(data, "\033[B");
 	return (0);
 }
 
 static int			delete_element(t_data *data, int *nb)
 {
-	if (*nb < 1)
+	if (!*nb)
 		restore_configuration(data, E_EXIT_SUCCESS);
 	if (data->select[data->pos] == TRUE)
-		toggle_element(data, nb);
+		NEG_PROTECT(toggle_element(data, nb), -1);
 	return (0);
 }
 
