@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/30 18:43:00 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/30 18:47:50 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/31 00:31:21 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int			check_window_size(t_data *data)
 	struct winsize		w;
 
 	PROTECT(str = tgetstr("cl", NULL), -1);
-	NEG_PROTECT(ioctl(STDOUT_FILENO, TIOCGWINSZ, &w), -1);
+	ft_printf("");
+	NEG_PROTECT(ioctl(data->fd, TIOCGWINSZ, &w), -1);
 	data->columns = (--w.ws_col - 4) / data->width;
 	data->rows = data->argc / _MAX(data->columns, 1);
 	data->extra = data->argc % _MAX(data->columns, 1);
