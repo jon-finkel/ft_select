@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:44:05 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/29 19:13:18 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/30 22:52:07 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <dirent.h>
 # include <locale.h>
+# include <signal.h>
 # include <sys/fcntl.h>
 # include <sys/ioctl.h>
 # include <sys/param.h>
@@ -27,7 +28,6 @@ typedef enum		s_flag
 {
 	E_REGULAR,
 	E_HELP,
-	E_DYNAMIC,
 	E_ENABLE,
 	E_DISABLE,
 	E_EXIT_SUCCESS,
@@ -52,12 +52,14 @@ typedef struct		s_data
 	int				rows;
 	int				extra;
 	size_t			width;
+	struct termios	*oldcc;
 	t_flag			status;
 }					t_data;
 
-int					color_output(t_data *data);
-int					display_files(t_data *data);
-int					display_help(t_data *data);
+int					check_window_size(t_data *data);
+int					color_output(t_data *data, int k, int x, int y);
+int					display_files(t_data *data, unsigned short ws_col);
+int					display_help(t_data *data, unsigned short ws_col);
 int					dynamic_search(t_data *data, char *buff, int x);
 int					flag_reverse_video(t_flag flag, const int fd);
 int					flag_underline(t_flag flag, const int fd);

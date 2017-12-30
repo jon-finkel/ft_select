@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/26 18:28:37 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/29 09:27:03 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/30 18:46:42 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,55 +62,23 @@ static int			display_frame(t_data *data, unsigned short ws_col)
 	return (0);
 }
 
-static int			color_display(t_data *data, const char *move, const int fd)
-{
-	char			*file;
-	char			*path;
-	struct stat		w_stat;
-
-	PROTECT(path = getcwd(NULL, MAXPATHLEN), -1);
-	NEG_PROTECT(ft_asprintf(&file, "%s/%s", path, data->argv[data->argc]), -1);
-	if (ft_strchr(data->argv[data->argc], '/'))
-		NEG_PROTECT(lstat(data->argv[data->argc], &w_stat), -1);
-	else
-		NEG_PROTECT(lstat(file, &w_stat), -1);
-	ft_cleanup(4, E_PTR, file, E_PTR, path);
-	if (data->select[data->argc] == FALSE && S_ISDIR(w_stat.st_mode))
-		ft_dprintf(fd, "%s{1Gx}%s{eoc}", move, data->argv[data->argc]);
-	else if (data->select[data->argc] == FALSE && S_ISLNK(w_stat.st_mode))
-		ft_dprintf(fd, "%s{fx}%s{eoc}", move, data->argv[data->argc]);
-	else if (data->select[data->argc] == FALSE && S_ISBLK(w_stat.st_mode))
-		ft_dprintf(fd, "%s{eg}%s{eoc}", move, data->argv[data->argc]);
-	else if (data->select[data->argc] == FALSE && S_ISCHR(w_stat.st_mode))
-		ft_dprintf(fd, "%s{ed}%s{eoc}", move, data->argv[data->argc]);
-	else if (data->select[data->argc] == FALSE && w_stat.st_mode & S_IXUSR)
-		ft_dprintf(fd, "%s{Dx}%s{eoc}", move, data->argv[data->argc]);
-	else
-		ft_dprintf(fd, "%s%s", move, data->argv[data->argc]);
-	return (0);
-}
-
-static int			column_display(t_data *data, int column, short extra)
+static int			column_display(t_data *data, int column, int rows)
 {
 	char		*move;
-	char		*str;
+	int			k;
 	int			x;
 	int			y;
 
+	rows += data->rows;
 	PROTECT(move = tgetstr("cm", NULL), -1);
 	x = column * data->width + data->padding * (column + 1) + 2;
-	y = 1;
-	column = -1;
-	while (++column < data->rows + extra)
+	y = 2;
+	k = -1;
+	while (++k < rows)
 	{
 		if (data->argc == data->pos)
 			flag_underline(E_ENABLE, data->fd);
-		if (data->select[data->argc] == TRUE)
-			flag_reverse_video(E_ENABLE, data->fd);
-		PROTECT(str = tgoto(move, x, ++y), -1);
-		NEG_PROTECT(color_display(data, str, data->fd), -1);
-		if (data->select[data->argc] == TRUE)
-			flag_reverse_video(E_DISABLE, data->fd);
+		NEG_PROTECT(color_output(data, data->argc, x, y++), -1);
 		if (data->argc == data->pos)
 			flag_underline(E_DISABLE, data->fd);
 		++data->argc;
@@ -118,29 +86,22 @@ static int			column_display(t_data *data, int column, short extra)
 	return (0);
 }
 
-int					display_files(t_data *data)
+int					display_files(t_data *data, unsigned short ws_col)
 {
 	int					columns;
 	short				extra;
-	struct winsize		w;
 
-	NEG_PROTECT(ioctl(STDOUT_FILENO, TIOCGWINSZ, &w), -1);
-	--w.ws_col;
-	data->columns = (w.ws_col - 4) / data->width;
-	data->rows = data->argc / data->columns;
-	data->extra = data->argc % data->columns;
-	data->padding = w.ws_col - data->width * data->columns;
+	data->padding = ws_col - data->width * data->columns;
 	data->padding /= data->columns + 1;
 	data->argc = 0;
-	extra = data->extra;
-	NEG_PROTECT(display_frame(data, w.ws_col), -1);
 	get_coordinates(data);
+	extra = data->extra;
+	NEG_PROTECT(display_frame(data, ws_col), -1);
 	columns = -1;
 	while (++columns < data->columns)
 	{
-		NEG_PROTECT(column_display(data, columns, (extra ? 1 : 0)), -1);
-		if (extra)
-			--extra;
+		NEG_PROTECT(column_display(data, columns, (extra > 0 ? 1 : 0)), -1);
+		--extra;
 	}
 	return (0);
 }

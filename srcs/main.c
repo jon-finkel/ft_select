@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:43:32 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/29 19:19:19 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/30 23:42:02 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,27 @@
 
 t_data		*g_data;
 
-int			main(int argc, char *argv[])
+static void			set_signals(void)
+{
+	struct sigaction		s;
+
+	s.__sigaction_u.__sa_handler = &signal_handler;
+	sigaction(SIGINT, &s, NULL);
+	sigaction(SIGQUIT, &s, NULL);
+	sigaction(SIGTERM, &s, NULL);
+	sigaction(SIGWINCH, &s, NULL);
+}
+
+int					main(int argc, char *argv[])
 {
 	setlocale(LC_ALL, "");
 	if (argc == 1)
 		ft_kill("usage: ft_select: argument1 [argument2 ...]");
 	PROTECT(g_data = (t_data *)malloc(sizeof(t_data)), -1);
-	PROTECT(g_data->argv = (char **)malloc(sizeof(char *) * argc), -1);
 	PROTECT(g_data->select = (t_bool *)malloc(sizeof(t_bool) * (argc - 1)), -1);
-	g_data->fd = open("/dev/tty", O_RDWR);
-	g_data->argv[g_data->argc] = NULL;
+	if (isatty(g_data->fd = open("/dev/tty", O_RDWR)) == FALSE)
+		ft_kill("fatal: not a terminal type device");
+	g_data->argv = argv + 1;
 	g_data->argc = argc - 1;
 	g_data->pos = 0;
 	g_data->curr_column = 0;
@@ -31,12 +42,10 @@ int			main(int argc, char *argv[])
 	g_data->status = E_REGULAR;
 	while (--argc)
 	{
-		PROTECT(g_data->argv[argc - 1] = ft_strdup(argv[argc]), -1);
 		g_data->width = _MAX(g_data->width, ft_strlen(argv[argc]));
-		g_data->select[g_data->argc] = FALSE;
+		g_data->select[argc - 1] = FALSE;
 	}
 	++g_data->width;
-	ft_interceptor(&signal_handler, 5, SIGINT, SIGQUIT, SIGTERM, SIGTSTP,\
-		SIGCONT, SIGWINCH);
+	set_signals();
 	return (initialize_termios(g_data));
 }

@@ -6,7 +6,7 @@
 #    By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/25 23:01:23 by nfinkel           #+#    #+#              #
-#    Updated: 2017/12/29 18:23:33 by nfinkel          ###   ########.fr        #
+#    Updated: 2017/12/30 18:42:18 by nfinkel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ NAME :=						ft_select
 CC :=						gcc
 
 ifneq ($(OS), Linux)
-	FLAGS +=				-Wall -Wextra -Werror
+	FLAGS +=				-Wall -Wextra -Werror 
 endif
 
 HEADERS :=					-I ./includes/
@@ -42,6 +42,7 @@ SRC +=						restore_configuration.c get_coordinates.c
 SRC +=						color_output.c display_files.c display_help.c
 SRC +=						flag_reverse_video.c flag_underline.c
 SRC +=						dynamic_search.c initialize_termios.c
+SRC +=						check_window_size.c
 
 OBJECTS =					$(patsubst %.c,$(OBJDIR)%.o,$(SRCS))
 
@@ -66,12 +67,16 @@ $(OBJDIR):
 	@mkdir -p $@
 
 $(OBJDIR)%.o: %.c
-	$(CC) $(DEBUG) $(FLAGS) $(O_FLAG) $(HEADERS) -c $< -o $@
+	$(CC) $(DEBUG)$(FLAGS)$(O_FLAG) $(HEADERS) -c $< -o $@
 
 clean:
 	@/bin/rm -rf $(OBJDIR)
 	@printf "\e[32m\e[1m[Object files cleaned]\e[m\n"
 #	@$(MAKE) clean -C $(LIBFTDIR)
+
+debug: CC := clang
+debug: DEBUG := -fsanitize=address -fno-omit-frame-pointer -fsanitize=undefined 
+debug: fclean all
 
 fclean: clean
 	@/bin/rm -f $(NAME)
@@ -86,7 +91,7 @@ noflags: re
 
 re: fclean all
 
-.PHONY: all cat clean fclean libft noflags re
+.PHONY: all cat clean debug fclean libft noflags re
 
 #################
 ##  WITH LOVE  ##

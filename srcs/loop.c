@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/28 14:03:16 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/29 18:35:44 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/30 18:49:47 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int			toggle_element(t_data *data, int *nb)
 		data->select[data->pos] = TRUE;
 	}
 	flag_underline(E_ENABLE, data->fd);
-	NEG_PROTECT(color_output(data), -1);
+	NEG_PROTECT(color_output(data, data->pos, data->x, data->y), -1);
 	flag_underline(E_DISABLE, data->fd);
 	input_arrow(data, "\033[B");
 	return (0);
@@ -82,7 +82,7 @@ static int			toggle_help(t_data *data)
 	char		buff[4];
 
 	data->status = E_HELP;
-	NEG_PROTECT(display_help(data), -1);
+	NEG_PROTECT(check_window_size(data), -1);
 	while (101010)
 	{
 		ft_memset(buff, '\0', 4);
@@ -93,7 +93,7 @@ static int			toggle_help(t_data *data)
 			break ;
 	}
 	data->status = E_REGULAR;
-	display_files(data);
+	NEG_PROTECT(check_window_size(data), -1);
 	return (0);
 }
 
@@ -112,7 +112,8 @@ int					loop(t_data *data)
 			break ;
 		else if (ft_strequ(buff, "\012"))
 			return (restore_configuration(data, E_OUTPUT));
-		else if (ft_strequ(buff, "\033") || input_arrow(data, buff) == -1)
+		else if (ft_strequ(buff, "\033") || (ft_strnequ(buff, "\033", 1)
+			&& input_arrow(data, buff) == -1))
 			break ;
 		else if ((*buff > '\040' && *buff < '\177')
 			&& dynamic_search(data, buff, 0) == -1)

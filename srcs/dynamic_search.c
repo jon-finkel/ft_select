@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 15:27:25 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/29 16:44:09 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/30 18:49:00 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ static int			find_file(t_data *data, const char *move, const char *file)
 	while (++k < data->argc)
 		if (ft_strnequ(file, data->argv[k], ft_strlen(file)))
 		{
-			NEG_PROTECT(color_output(data), -1);
+			NEG_PROTECT(color_output(data, data->pos, data->x, data->y), -1);
 			data->pos = k;
 			get_coordinates(data);
 			flag_underline(E_ENABLE, data->fd);
-			NEG_PROTECT(color_output(data), -1);
+			NEG_PROTECT(color_output(data, data->pos, data->x, data->y), -1);
 			flag_underline(E_DISABLE, data->fd);
 			return (0);
 		}
@@ -61,7 +61,6 @@ int					dynamic_search(t_data *data, char *buff, int x)
 	char		file[512];
 	int			ret;
 
-	data->status = E_DYNAMIC;
 	while (101010)
 	{
 		if (ft_strequ(buff, "\033") || ft_strequ(buff, "\040"))
@@ -80,7 +79,6 @@ int					dynamic_search(t_data *data, char *buff, int x)
 		ft_memset(buff, '\0', 4);
 		NEG_PROTECT(read(STDIN_FILENO, buff, 3), -1);
 	}
-	display_files(data);
-	data->status = E_REGULAR;
+	NEG_PROTECT(check_window_size(data), -1);
 	return (0);
 }
