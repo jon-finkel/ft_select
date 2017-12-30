@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:44:05 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/29 16:16:45 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/29 19:13:18 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,47 +23,49 @@
 # include <termios.h>
 # include "../libft/includes/libft.h"
 
-typedef enum	s_flag
+typedef enum		s_flag
 {
 	E_REGULAR,
 	E_HELP,
 	E_DYNAMIC,
 	E_ENABLE,
 	E_DISABLE,
-	E_OUTPUT,
 	E_EXIT_SUCCESS,
-	E_EXIT_FAILURE
-}				t_flag;
+	E_EXIT_FAILURE,
+	E_OUTPUT,
+	E_SUSPEND
+}					t_flag;
 
-typedef struct	s_data
+typedef struct		s_data
 {
-	char		*string;
-	char		**argv;
-	t_bool		*select;
-	int			fd;
-	int			argc;
-	int			pos;
-	int			padding;
-	int			x;
-	int			y;
-	int			curr_column;
-	int			columns;
-	int			rows;
-	int			extra;
-	size_t		width;
-	t_flag		status;;
-}				t_data;
+	char			*string;
+	char			**argv;
+	t_bool			*select;
+	int				fd;
+	int				argc;
+	int				pos;
+	int				padding;
+	int				x;
+	int				y;
+	int				curr_column;
+	int				columns;
+	int				rows;
+	int				extra;
+	size_t			width;
+	t_flag			status;
+}					t_data;
 
-int				color_output(t_data *data);
-int				display_files(t_data *data);
-int				display_help(t_data *data);
-int				dynamic_search(t_data *data, char *buff, int x);
-int				flag_reverse_video(t_flag flag, const int fd);
-int				flag_underline(t_flag flag, const int fd);
-void			get_coordinates(t_data *data);
-int				input_arrow(t_data *data, const char *const buff);
-int				loop(t_data *data);
-int				restore_configuration(t_data *data, t_flag flag);
-void			signal_handler(int signo);
+int					color_output(t_data *data);
+int					display_files(t_data *data);
+int					display_help(t_data *data);
+int					dynamic_search(t_data *data, char *buff, int x);
+int					flag_reverse_video(t_flag flag, const int fd);
+int					flag_underline(t_flag flag, const int fd);
+void				get_coordinates(t_data *data);
+int					initialize_termios(t_data *data);
+int					input_arrow(t_data *data, const char *const buff);
+int					loop(t_data *data);
+int					restore_configuration(t_data *data, t_flag flag);
+void				signal_handler(int signo);
 
 #endif

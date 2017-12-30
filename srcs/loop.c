@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/28 14:03:16 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/29 18:03:35 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/29 18:35:44 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,6 @@ int					loop(t_data *data)
 	char			buff[4];
 	static int		nb = 0;
 
-	ft_interceptor(&signal_handler, 2, SIGINT, SIGWINCH);
-	NEG_PROTECT(display_files(data), -1);
 	while (101010)
 	{
 		ft_memset(buff, '\0', 4);
@@ -123,5 +121,5 @@ int					loop(t_data *data)
 			&& toggle_element(data, &nb) == -1)
 			break ;
 	}
-	return (restore_configuration(data, E_DISABLE));
+	return (restore_configuration(data, E_EXIT_SUCCESS));
 }
