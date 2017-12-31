@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 18:23:56 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/31 15:47:59 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/31 17:18:10 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int					initialize_termios(t_data *data)
 
 	set_signals();
 	if (!(termtype = getenv("TERM")))
-		ft_kill("fatal: specify a terminal type with `setenv TERM`");
+		ft_fatal("specify a terminal type with `setenv TERM`");
 	if (!(ret = tgetent(buffer, termtype)) || ret == -1)
-		ft_kill("fatal: terminal type is not defined");
+		ft_fatal("terminal type is not defined");
 	NEG_PROTECT(tcgetattr(data->fd, &term), -1);
 	PROTECT(data->oldcc = (struct termios *)malloc(sizeof(struct termios)), -1);
 	ft_memmove(data->oldcc, &term, sizeof(struct termios));

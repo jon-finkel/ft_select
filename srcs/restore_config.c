@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/31 10:17:22 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/31 14:43:52 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/31 17:35:52 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static int			restore_termios(t_data *data, t_flag flag)
 		NEG_PROTECT(ioctl(data->fd, TIOCSTI, buff), -1);
 	}
 	NEG_PROTECT(tcsetattr(data->fd, TCSANOW, data->oldcc), -1);
+	ft_memdel((void **)&data->oldcc);
 	PROTECT(str = tgetstr("ve", NULL), -1);
 	ft_putstr_fd(str, data->fd);
 	return (0);

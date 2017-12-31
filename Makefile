@@ -6,7 +6,7 @@
 #    By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/25 23:01:23 by nfinkel           #+#    #+#              #
-#    Updated: 2017/12/31 10:42:38 by nfinkel          ###   ########.fr        #
+#    Updated: 2017/12/31 17:16:49 by nfinkel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,7 @@ vpath %.c $(UTILS_DIR)
 
 all: $(NAME)
 
-$(NAME): $(OBJECTS)
+$(NAME): libft $(OBJECTS)
 	@printf "\e[32m\e[1m[Object files compiled]\e[m\n"
 	@$(CC) $(DEBUG) $(FLAGS) $(O_FLAG) $(patsubst %.c,$(OBJDIR)%.o,$(notdir $(SRCS))) -L $(LIBFTDIR) -lft -lncurses -o $@
 	@printf "\e[32m\e[1m[Binary file \e[91m\e[1m$(NAME) \e[32m\e[1mcompiled!]\e[m\n"
@@ -76,7 +76,7 @@ $(OBJDIR)%.o: %.c
 clean:
 	@/bin/rm -rf $(OBJDIR)
 	@printf "\e[32m\e[1m[Object files cleaned]\e[m\n"
-#	@$(MAKE) clean -C $(LIBFTDIR)
+	@$(MAKE) clean -C $(LIBFTDIR)
 
 debug: CC := clang
 debug: DEBUG := -fsanitize=address -fno-omit-frame-pointer -fsanitize=undefined 
@@ -85,7 +85,7 @@ debug: fclean all
 fclean: clean
 	@/bin/rm -f $(NAME)
 	@printf "\e[32m\e[1m[Binary file \e[91m\e[1m$(NAME) \e[32m\e[1mcleaned]\e[m\n"
-#	@$(MAKE) fclean -C $(LIBFTDIR)
+	@$(MAKE) fclean -C $(LIBFTDIR)
 
 libft:
 	@$(MAKE) -C $(LIBFTDIR)
