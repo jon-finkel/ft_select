@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:43:32 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/31 00:27:00 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/31 15:31:39 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,13 @@ static void			set_signals(void)
 	struct sigaction		s;
 
 	s.__sigaction_u.__sa_handler = &signal_handler;
+	s.sa_flags = 0;
+	s.sa_mask = 0;
 	sigaction(SIGINT, &s, NULL);
 	sigaction(SIGQUIT, &s, NULL);
 	sigaction(SIGTERM, &s, NULL);
+	sigaction(SIGCONT, &s, NULL);
+	sigaction(SIGTSTP, &s, NULL);
 	s.sa_flags = SA_RESTART;
 	sigaction(SIGWINCH, &s, NULL);
 }
