@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:44:05 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/30 22:52:07 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/31 09:27:21 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ int					input_arrow(t_data *data, const char *const buff);
 int					loop(t_data *data);
 int					restore_configuration(t_data *data, t_flag flag);
 void				signal_handler(int signo);
+int					toggle_help(t_data *data);
 
 #endif

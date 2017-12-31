@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 15:27:25 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/30 18:49:00 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/31 09:29:18 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,24 +61,21 @@ int					dynamic_search(t_data *data, char *buff, int x)
 	char		file[512];
 	int			ret;
 
+	ret = 0;
 	while (101010)
 	{
 		if (ft_strequ(buff, "\033") || ft_strequ(buff, "\040"))
 			break ;
-		else if (*buff == '\033')
-		{
-			NEG_PROTECT(input_arrow(data, buff), -1);
+		else if (ft_strequ(buff, "\011"))
+			return (toggle_help(data));
+		else if (*buff == '\033' && (ret = input_arrow(data, buff)) < INT_MAX)
 			break ;
-		}
-		else
-		{
-			NEG_PROTECT((ret = search_letter(data, file, *buff, &x)), -1);
-			if (ret == 255)
+		else if ((ret = search_letter(data, file, *buff, &x)) == -1
+			|| ret == 255)
 				break ;
-		}
 		ft_memset(buff, '\0', 4);
 		NEG_PROTECT(read(STDIN_FILENO, buff, 3), -1);
 	}
 	NEG_PROTECT(check_window_size(data), -1);
-	return (0);
+	return (ret);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display_help.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   Bnb: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/28 14:43:07 bnb nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/30 18:47:25 by nfinkel          ###   ########.fr       */
+/*   Created: 2017/12/31 09:12:35 by nfinkel           #+#    #+#             */
+/*   Updated: 2017/12/31 09:12:36 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void			display_text(char *move, const int fd, int nb,
 			", by {1b}Jon Finkel{eoc} ", str);
 }
 
-int			display_help(t_data *data, unsigned short ws_col)
+int					display_help(t_data *data, unsigned short ws_col)
 {
 	char				*move;
 	char				*str;
