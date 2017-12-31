@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/31 09:12:35 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/31 11:01:08 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/31 12:39:07 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ static void			display_text1(char *move, const int fd, int nb,
 	EXIT_PROTECT(str = tgoto(move, (ws_col / 2) - 17, ++nb));
 	ft_dprintf(fd, "%s{17H} | BACKSPACE :    unselect file | {eoc}\n", str);
 	EXIT_PROTECT(str = tgoto(move, (ws_col / 2) - 17, ++nb));
-	ft_dprintf(fd, "%s{17H} | ESCAPE :                exit | {eoc}\n", str);
-	EXIT_PROTECT(str = tgoto(move, (ws_col / 2) - 17, ++nb));
 	ft_dprintf(fd, "%s{17H} | * :               select all | {eoc}\n", str);
 	EXIT_PROTECT(str = tgoto(move, (ws_col / 2) - 17, ++nb));
 	ft_dprintf(fd, "%s{17H} | \\ :             unselect all | {eoc}\n", str);
+	EXIT_PROTECT(str = tgoto(move, (ws_col / 2) - 17, ++nb));
+	ft_dprintf(fd, "%s{17H} | ESCAPE :                exit | {eoc}\n", str);
 	EXIT_PROTECT(str = tgoto(move, (ws_col / 2) - 17, ++nb));
 	ft_dprintf(fd, "%s{17H} | %C%C%C%C:            move cursor | {eoc}\n", str,\
 		0x2190, 0x2191, 0x2192, 0x2193);
