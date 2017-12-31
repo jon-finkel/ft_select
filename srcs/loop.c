@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/28 14:03:16 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/31 09:32:40 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/31 11:11:50 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int			remove_element(t_data *data, int *nb)
 	return (0);
 }
 
-static int			toggle_element(t_data *data, int *nb)
+static int			toggle_elem(t_data *data, int *nb)
 {
 	char		buff[MAXPATHLEN + 1024];
 
@@ -71,9 +71,37 @@ static int			toggle_element(t_data *data, int *nb)
 static int			delete_element(t_data *data, int *nb)
 {
 	if (!*nb)
-		restore_configuration(data, E_EXIT_SUCCESS);
+		restore_config(data, E_EXIT_SUCCESS);
 	if (data->select[data->pos] == TRUE)
-		NEG_PROTECT(toggle_element(data, nb), -1);
+		NEG_PROTECT(toggle_elem(data, nb), -1);
+	return (0);
+}
+
+static int			full_toggle(t_data *data, int *nb, t_flag flag)
+{
+	char		buff[1024];
+	int			k;
+
+	k = -1;
+	ft_strdel(&data->string);
+	if (flag == E_DISABLE && !(*nb = 0) && !(data->pos = 0))
+		while (++k < data->argc)
+			data->select[k] = FALSE;
+	else
+	{
+		PROTECT(data->string = ft_strdup(data->argv[++k]), -1);
+		while (++k < data->argc)
+		{
+			data->select[k] = TRUE;
+			ft_memset(buff, '\0', 1024);
+			ft_strcat(buff, " ");
+			ft_strcat(buff, data->argv[k]);
+			PROTECT(data->string = ft_strjoin(data->string, buff, E_FREE), -1);
+		}
+		data->select[0] = TRUE;
+		*nb = k;
+	}
+	check_window_size(data);
 	return (0);
 }
 
@@ -86,21 +114,20 @@ int					loop(t_data *data)
 	{
 		ft_memset(buff, '\0', 4);
 		NEG_PROTECT(read(STDIN_FILENO, &buff, 3), -1);
-		if (ft_strequ(buff, "\010") || ft_strequ(buff, "\177"))
+		if (*buff == 8 || *buff == 127)
 			delete_element(data, &nb);
-		else if (ft_strequ(buff, "\011") && toggle_help(data) == -1)
+		else if ((*buff == 9 && toggle_help(data) == -1) || *buff == 10)
 			break ;
-		else if (ft_strequ(buff, "\012"))
-			return (restore_configuration(data, E_OUTPUT));
 		else if (ft_strequ(buff, "\033") || (ft_strnequ(buff, "\033", 1)
 			&& input_arrow(data, buff) == -1))
 			break ;
-		else if ((*buff > '\040' && *buff < '\177')
-			&& dynamic_search(data, buff, 0) == -1)
+		else if ((*buff == 42 && full_toggle(data, &nb, E_ENABLE) == -1)
+			|| (*buff == 92 && full_toggle(data, &nb, E_DISABLE) == -1))
 			break ;
-		else if ((ft_strequ(buff, "\040") || ft_strequ(buff, "\012"))
-			&& toggle_element(data, &nb) == -1)
+		else if (lettercheck(*buff) && dynamic_search(data, buff, 0) == -1)
+			break ;
+		else if ((*buff == 10 || *buff == 32) && toggle_elem(data, &nb) == -1)
 			break ;
 	}
-	return (restore_configuration(data, E_EXIT_SUCCESS));
+	return (restore_config(data,(*buff == 10 ? E_OUTPUT : E_EXIT_SUCCESS)));
 }

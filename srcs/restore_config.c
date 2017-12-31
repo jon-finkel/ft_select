@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   restore_configuration.c                            :+:      :+:    :+:   */
+/*   restore_config.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/27 11:47:09 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/31 00:13:02 by nfinkel          ###   ########.fr       */
+/*   Created: 2017/12/31 10:17:22 by nfinkel           #+#    #+#             */
+/*   Updated: 2017/12/31 10:58:01 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,14 @@ static int			restore_termios(t_data *data, t_flag flag)
 	return (0);
 }
 
-int					restore_configuration(t_data *data, t_flag flag)
+int					restore_config(t_data *data, t_flag flag)
 {
 	NEG_PROTECT(restore_termios(data, flag), -1);
 	ft_putstr_fd("\033[?1049l", data->fd);
 	if (flag == E_OUTPUT)
 		ft_dprintf(STDOUT_FILENO, data->string);
 	if (flag != E_SUSPEND)
-	{
-		ft_strdel(&data->string);
 		close(data->fd);
-		ft_cleanup(4, E_PTR, data->select, E_PTR, data);
-	}
 	if (flag == E_EXIT_SUCCESS)
 		exit(EXIT_SUCCESS);
 	else if (flag == E_EXIT_FAILURE)

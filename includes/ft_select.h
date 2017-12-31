@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:44:05 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/31 09:27:21 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/31 10:39:58 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <termcap.h>
 # include <termios.h>
 # include "../libft/includes/libft.h"
+
+# define LAST_INPUT 5
 
 typedef enum		s_flag
 {
@@ -66,8 +68,9 @@ int					flag_underline(t_flag flag, const int fd);
 void				get_coordinates(t_data *data);
 int					initialize_termios(t_data *data);
 int					input_arrow(t_data *data, const char *const buff);
+int					lettercheck(char c);
 int					loop(t_data *data);
-int					restore_configuration(t_data *data, t_flag flag);
+int					restore_config(t_data *data, t_flag flag);
 void				signal_handler(int signo);
 int					toggle_help(t_data *data);
 

@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/30 18:43:00 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/31 09:02:54 by nfinkel          ###   ########.fr       */
+/*   Updated: 2017/12/31 10:48:02 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int			check_window_size(t_data *data)
 	x = _MAX(37, (int)(data->width + 4));
 	y = data->rows + (data->extra ? 5 : 4);
 	if (data->status == E_HELP)
-		y = _MAX(10, y);
+		y = _MAX(12, y);
 	if (w.ws_col >= x && w.ws_row >= y)
 	{
 		if (data->status == E_HELP)

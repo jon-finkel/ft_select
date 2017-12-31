@@ -6,7 +6,7 @@
 #    By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/25 23:01:23 by nfinkel           #+#    #+#              #
-#    Updated: 2017/12/31 09:32:26 by nfinkel          ###   ########.fr        #
+#    Updated: 2017/12/31 10:42:38 by nfinkel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,20 +35,24 @@ LIBFTDIR :=					./libft/
 OBJDIR :=					./build/
 
 SRCS_DIR :=					./srcs/
+UTILS_DIR :=				./utils/
 
 #	Sources
 SRC +=						main.c loop.c signal_handler.c input_arrow.c
-SRC +=						restore_configuration.c get_coordinates.c
+SRC +=						restore_config.c get_coordinates.c
 SRC +=						color_output.c display_files.c
 SRC +=						flag_reverse_video.c flag_underline.c
 SRC +=						dynamic_search.c initialize_termios.c
 SRC +=						check_window_size.c display_help.c toggle_help.c
+UTILS +=					lettercheck.c
 
 OBJECTS =					$(patsubst %.c,$(OBJDIR)%.o,$(SRCS))
 
 SRCS +=						$(SRC)
+SRCS +=						$(UTILS)
 
 vpath %.c $(SRCS_DIR)
+vpath %.c $(UTILS_DIR)
 
 #################
 ##    RULES    ##
