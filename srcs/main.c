@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:43:32 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/31 17:38:45 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/01/01 22:15:47 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int					main(int argc, char *argv[])
 {
 	if (argc == 1)
 	{
-		ft_putstr("usage: ft_select: argument1 [argument2 ...]");
+		ft_putendl("usage: ft_select: argument1 [argument2 ...]");
 		return (0);
 	}
 	setlocale(LC_ALL, "");
