@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:43:32 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/01/01 22:15:47 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/01/05 17:44:56 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ static void			set_signals(void)
 	sigaction(SIGINT, &s, NULL);
 	sigaction(SIGQUIT, &s, NULL);
 	sigaction(SIGTERM, &s, NULL);
-	sigaction(SIGCONT, &s, NULL);
-	sigaction(SIGTSTP, &s, NULL);
 	s.sa_flags = SA_RESTART;
 	sigaction(SIGWINCH, &s, NULL);
 }
