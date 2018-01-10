@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/26 17:24:29 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/31 15:35:40 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/01/10 13:50:29 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void			signal_handler(int signo)
 {
-	extern t_data			*g_data;
+	extern t_data		*g_data;
 
 	if (signo == SIGINT || signo == SIGQUIT || signo == SIGTERM)
 		restore_config(g_data, E_EXIT_SUCCESS);

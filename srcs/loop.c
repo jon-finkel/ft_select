@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/28 14:03:16 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/31 11:11:50 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/01/10 13:54:28 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,17 @@ static int			delete_element(t_data *data, int *nb)
 	return (0);
 }
 
-static int			full_toggle(t_data *data, int *nb, t_flag flag)
+static int			full_toggle(t_data *data, int *nb, t_flag flag, int k)
 {
 	char		buff[1024];
-	int			k;
 
-	k = -1;
 	ft_strdel(&data->string);
-	if (flag == E_DISABLE && !(*nb = 0) && !(data->pos = 0))
+	if (flag == E_DISABLE && !(data->pos = 0))
+	{
+		*nb = 0;
 		while (++k < data->argc)
 			data->select[k] = FALSE;
+	}
 	else
 	{
 		PROTECT(data->string = ft_strdup(data->argv[++k]), -1);
@@ -113,21 +114,21 @@ int					loop(t_data *data)
 	while (101010)
 	{
 		ft_memset(buff, '\0', 4);
-		NEG_PROTECT(read(STDIN_FILENO, &buff, 3), -1);
-		if (*buff == 8 || *buff == 127)
+		NEG_PROTECT(read(STDIN_FILENO, buff, 3), -1);
+		if (*buff == 127 || ft_strnequ(buff, "\0333~", 3))
 			delete_element(data, &nb);
 		else if ((*buff == 9 && toggle_help(data) == -1) || *buff == 10)
 			break ;
 		else if (ft_strequ(buff, "\033") || (ft_strnequ(buff, "\033", 1)
 			&& input_arrow(data, buff) == -1))
 			break ;
-		else if ((*buff == 42 && full_toggle(data, &nb, E_ENABLE) == -1)
-			|| (*buff == 92 && full_toggle(data, &nb, E_DISABLE) == -1))
+		else if ((*buff == 42 && full_toggle(data, &nb, E_ENABLE, -1) == -1)
+			|| (*buff == 92 && full_toggle(data, &nb, E_DISABLE, -1) == -1))
 			break ;
 		else if (lettercheck(*buff) && dynamic_search(data, buff, 0) == -1)
 			break ;
 		else if ((*buff == 10 || *buff == 32) && toggle_elem(data, &nb) == -1)
 			break ;
 	}
-	return (restore_config(data,(*buff == 10 ? E_OUTPUT : E_EXIT_SUCCESS)));
+	return (restore_config(data, (*buff == 10 ? E_OUTPUT : E_EXIT_SUCCESS)));
 }

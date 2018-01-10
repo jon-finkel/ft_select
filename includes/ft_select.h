@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:44:05 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/31 10:39:58 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/01/10 13:51:26 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 # define LAST_INPUT 5
 
-typedef enum		s_flag
+typedef enum		e_flag
 {
 	E_REGULAR,
 	E_HELP,

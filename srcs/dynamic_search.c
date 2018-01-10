@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 15:27:25 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/31 10:04:02 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/01/10 13:51:55 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int					dynamic_search(t_data *data, char *buff, int x)
 			break ;
 		else if ((ret = search_letter(data, file, *buff, &x)) == -1
 			|| ret == 255)
-				break ;
+			break ;
 		ft_memset(buff, '\0', 4);
 		NEG_PROTECT(read(STDIN_FILENO, buff, 3), -1);
 	}
