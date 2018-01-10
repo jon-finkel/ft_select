@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/28 14:03:16 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/01/10 13:54:28 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/01/10 14:09:18 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,14 @@ static int			full_toggle(t_data *data, int *nb, t_flag flag, int k)
 
 int					loop(t_data *data)
 {
-	char			buff[4];
+	char			buff[5];
 	static int		nb = 0;
 
 	while (101010)
 	{
-		ft_memset(buff, '\0', 4);
-		NEG_PROTECT(read(STDIN_FILENO, buff, 3), -1);
-		if (*buff == 127 || ft_strnequ(buff, "\0333~", 3))
+		ft_memset(buff, '\0', 5);
+		NEG_PROTECT(read(STDIN_FILENO, buff, 4), -1);
+		if (*buff == 127 || ft_strnequ(buff, "\033[3~", 4))
 			delete_element(data, &nb);
 		else if ((*buff == 9 && toggle_help(data) == -1) || *buff == 10)
 			break ;
