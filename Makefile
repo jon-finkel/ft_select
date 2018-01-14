@@ -6,7 +6,7 @@
 #    By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/25 23:01:23 by nfinkel           #+#    #+#              #
-#    Updated: 2017/12/31 17:59:10 by nfinkel          ###   ########.fr        #
+#    Updated: 2018/01/14 11:52:30 by nfinkel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,18 +74,18 @@ $(OBJDIR)%.o: %.c
 	$(CC) $(DEBUG)$(FLAGS)$(O_FLAG) $(HEADERS) -c $< -o $@
 
 clean:
-	@$(MAKE) clean -C $(LIBFTDIR)
 	@/bin/rm -rf $(OBJDIR)
 	@printf "\e[32m\e[1m[Object files cleaned]\e[m\n"
+#	@$(MAKE) clean -C $(LIBFTDIR)
 
 debug: CC := clang
 debug: DEBUG := -fsanitize=address -fno-omit-frame-pointer -fsanitize=undefined 
 debug: fclean all
 
 fclean: clean
-	@$(MAKE) fclean -C $(LIBFTDIR)
 	@/bin/rm -f $(NAME)
 	@printf "\e[32m\e[1m[Binary file \e[91m\e[1m$(NAME) \e[32m\e[1mcleaned]\e[m\n"
+#	@$(MAKE) fclean -C $(LIBFTDIR)
 
 libft:
 	@$(MAKE) -C $(LIBFTDIR)

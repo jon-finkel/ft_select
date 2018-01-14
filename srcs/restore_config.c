@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/31 10:17:22 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/31 17:35:52 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/01/14 11:47:47 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int					restore_config(t_data *data, t_flag flag)
 	NEG_PROTECT(restore_termios(data, flag), -1);
 	ft_putstr_fd("\033[?1049l", data->fd);
 	if (flag == E_OUTPUT)
-		ft_dprintf(STDOUT_FILENO, data->string);
+		ft_putendl_fd(data->string, STDOUT_FILENO);
 	if (flag != E_SUSPEND)
 		close(data->fd);
 	if (flag == E_EXIT_SUCCESS)

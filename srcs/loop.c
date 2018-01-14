@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/28 14:03:16 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/01/10 14:09:18 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/01/14 11:44:43 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,25 @@ static int			toggle_elem(t_data *data, int *nb)
 
 static int			delete_element(t_data *data, int *nb)
 {
-	if (!*nb)
-		restore_config(data, E_EXIT_SUCCESS);
+	int		k;
+
 	if (data->select[data->pos] == TRUE)
-		NEG_PROTECT(toggle_elem(data, nb), -1);
+	{
+		NEG_PROTECT(remove_element(data, nb), -1);
+		if (!*nb)
+			restore_config(data, E_EXIT_SUCCESS);
+	}
+	k = data->pos;
+	while (data->argv[++k])
+	{
+		data->argv[k - 1] = data->argv[k];
+		data->select[k - 1] = data->select[k];
+	}
+	data->argv[k] = NULL;
+	--data->argc;
+	if (data->pos)
+		--data->pos;
+	NEG_PROTECT(check_window_size(data), -1);
 	return (0);
 }
 
