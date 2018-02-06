@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:44:05 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/01/10 13:51:26 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/06 15:07:51 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ typedef enum		e_flag
 
 typedef struct		s_data
 {
+	bool			*select;
 	char			*string;
 	char			**argv;
-	t_bool			*select;
 	int				fd;
 	int				argc;
 	int				pos;

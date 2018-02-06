@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 15:27:25 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/01/10 13:51:55 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/06 15:12:08 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@ static int			find_file(t_data *data, const char *move, const char *file)
 	while (++k < data->argc)
 		if (ft_strnequ(file, data->argv[k], ft_strlen(file)))
 		{
-			NEG_PROTECT(color_output(data, data->pos, data->x, data->y), -1);
+			EPICFAILZ(color_output(data, data->pos, data->x, data->y), -1);
 			data->pos = k;
 			get_coordinates(data);
 			flag_underline(E_ENABLE, data->fd);
-			NEG_PROTECT(color_output(data, data->pos, data->x, data->y), -1);
+			EPICFAILZ(color_output(data, data->pos, data->x, data->y), -1);
 			flag_underline(E_DISABLE, data->fd);
-			return (0);
+			KTHXBYE;
 		}
-	PROTECT(str = tgoto(move, 2, data->rows + (data->extra ? 6 : 5)), -1);
+	FAILZ(str = tgoto(move, 2, data->rows + (data->extra ? 6 : 5)), -1);
 	ft_dprintf(data->fd, "%sFILE NOT FOUND !", str);
-	return (0);
+	KTHXBYE;
 }
 
 static int			search_letter(t_data *data, char *file, const char buff,
@@ -41,19 +41,19 @@ static int			search_letter(t_data *data, char *file, const char buff,
 	char				*str;
 
 	if ((!*x && (buff == '\010' || buff == '\177')) || buff == '\012')
-		return (255);
+		GIMME(255);
 	else if (buff == '\010' || buff == '\177')
 		*x -= 1;
 	else
 		file[++(*x) - 1] = buff;
 	file[*x] = '\0';
-	PROTECT(move = tgetstr("cm", NULL), -1);
-	PROTECT(str = tgoto(move, 2, data->rows + (data->extra ? 5 : 4)), -1);
+	FAILZ(move = tgetstr("cm", NULL), -1);
+	FAILZ(str = tgoto(move, 2, data->rows + (data->extra ? 5 : 4)), -1);
 	ft_putstr_fd(str, data->fd);
-	PROTECT(str = tgetstr("cd", NULL), -1);
+	FAILZ(str = tgetstr("cd", NULL), -1);
 	ft_dprintf(data->fd, "%s{17H}search file: %s{eoc}", str, file);
-	NEG_PROTECT(find_file(data, move, file), -1);
-	return (0);
+	EPICFAILZ(find_file(data, move, file), -1);
+	KTHXBYE;
 }
 
 int					dynamic_search(t_data *data, char *buff, int x)
@@ -65,17 +65,17 @@ int					dynamic_search(t_data *data, char *buff, int x)
 	while (101010)
 	{
 		if (ft_strequ(buff, "\033") || ft_strequ(buff, "\040"))
-			break ;
+			IMOUTTAYR;
 		else if (ft_strequ(buff, "\011"))
-			return (toggle_help(data));
+			GIMME(toggle_help(data));
 		else if (*buff == '\033' && (ret = input_arrow(data, buff)) < INT_MAX)
-			break ;
+			IMOUTTAYR;
 		else if ((ret = search_letter(data, file, *buff, &x)) == -1
 			|| ret == 255)
-			break ;
+			IMOUTTAYR;
 		ft_memset(buff, '\0', 4);
-		NEG_PROTECT(read(STDIN_FILENO, buff, 3), -1);
+		EPICFAILZ(read(STDIN_FILENO, buff, 3), -1);
 	}
-	NEG_PROTECT(check_window_size(data), -1);
-	return (ret);
+	EPICFAILZ(check_window_size(data), -1);
+	GIMME(ret);
 }

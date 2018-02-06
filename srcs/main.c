@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:43:32 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/01/10 13:50:16 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/06 15:23:47 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ int					main(int argc, char *argv[])
 	if (argc == 1)
 	{
 		ft_putendl("usage: ft_select: argument1 [argument2 ...]");
-		return (0);
+		KTHXBYE;
 	}
 	setlocale(LC_ALL, "");
-	PROTECT(g_data = (t_data *)malloc(sizeof(t_data)), -1);
-	PROTECT(g_data->select = (t_bool *)malloc(sizeof(t_bool) * (argc - 1)), -1);
-	if (isatty(g_data->fd = open("/dev/tty", O_RDWR)) == FALSE)
+	FAILZ(g_data = (t_data *)malloc(sizeof(t_data)), -1);
+	FAILZ(g_data->select = (bool *)malloc(sizeof(bool) * (argc - 1)), -1);
+	if (isatty(g_data->fd = open("/dev/tty", O_RDWR)) == false)
 		ft_fatal("not a terminal type device");
 	g_data->string = NULL;
 	g_data->oldcc = NULL;
@@ -50,9 +50,9 @@ int					main(int argc, char *argv[])
 	g_data->status = E_REGULAR;
 	while (--argc)
 	{
-		g_data->width = _MAX(g_data->width, ft_strlen(argv[argc]) + 1);
-		g_data->select[argc - 1] = FALSE;
+		g_data->width = MAX(g_data->width, ft_strlen(argv[argc]) + 1);
+		g_data->select[argc - 1] = false;
 	}
 	set_signals();
-	return (initialize_termios(g_data));
+	GIMME(initialize_termios(g_data));
 }

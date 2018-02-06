@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/27 20:30:34 by nfinkel           #+#    #+#             */
-/*   Updated: 2017/12/31 14:20:44 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/06 15:10:26 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,17 @@ int					color_output(t_data *data, int k, int x, int y)
 	struct stat		w_stat;
 
 	ft_memset(file, '\0', MAXPATHLEN + 1048);
-	if (data->select[k] == TRUE)
+	if (data->select[k] == true)
 		flag_reverse_video(E_ENABLE, data->fd);
-	PROTECT(move = tgetstr("cm", NULL), -1);
-	PROTECT(str = tgoto(move, x, y), -1);
-	NEG_PROTECT(ft_sprintf(file, "%v/%s", "PWD", data->argv[k]), -1);
+	FAILZ(move = tgetstr("cm", NULL), -1);
+	FAILZ(str = tgoto(move, x, y), -1);
+	EPICFAILZ(ft_sprintf(file, "%v/%s", "PWD", data->argv[k]), -1);
 	if (ft_strchr(data->argv[k], '/'))
 		x = lstat(data->argv[k], &w_stat);
 	else
 		x = lstat(file, &w_stat);
 	output_file(data, (x == -1 ? NULL : &w_stat), str, k);
-	if (data->select[k] == TRUE)
+	if (data->select[k] == true)
 		flag_reverse_video(E_DISABLE, data->fd);
-	return (0);
+	KTHXBYE;
 }

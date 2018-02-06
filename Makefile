@@ -6,7 +6,7 @@
 #    By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/25 23:01:23 by nfinkel           #+#    #+#              #
-#    Updated: 2018/01/14 11:52:30 by nfinkel          ###   ########.fr        #
+#    Updated: 2018/02/06 15:26:44 by nfinkel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,12 +58,11 @@ vpath %.c $(UTILS_DIR)
 ##    RULES    ##
 #################
 
-all: $(NAME)
+all: libft $(NAME)
 
-$(NAME): libft $(OBJECTS)
-	@printf "\e[32m\e[1m[Object files compiled]\e[m\n"
+$(NAME): $(OBJECTS)
 	@$(CC) $(DEBUG) $(FLAGS) $(O_FLAG) $(patsubst %.c,$(OBJDIR)%.o,$(notdir $(SRCS))) -L $(LIBFTDIR) -lft -lncurses -o $@
-	@printf "\e[32m\e[1m[Binary file \e[91m\e[1m$(NAME) \e[32m\e[1mcompiled!]\e[m\n"
+	@printf  "\033[92m\033[1:32mCompiling -------------> \033[91m$(NAME)\033[0m:\033[0m%-11s\033[32m[✔]\033[0m\n"
 
 $(OBJECTS): | $(OBJDIR)
 
@@ -71,21 +70,22 @@ $(OBJDIR):
 	@mkdir -p $@
 
 $(OBJDIR)%.o: %.c
-	$(CC) $(DEBUG)$(FLAGS)$(O_FLAG) $(HEADERS) -c $< -o $@
+	@printf  "\033[1:92mCompiling $(NAME)\033[0m %-26s\033[32m[$<]\033[0m\n" ""
+	@$(CC) $(VERSION) $(DEBUG)$(FLAGS)$(O_FLAG) $(HEADERS) -c $< -o $@
+	@printf "\033[A\033[2K"
 
 clean:
 	@/bin/rm -rf $(OBJDIR)
-	@printf "\e[32m\e[1m[Object files cleaned]\e[m\n"
-#	@$(MAKE) clean -C $(LIBFTDIR)
+	@printf  "\033[1:32mCleaning object files -> \033[91m$(NAME)\033[0m\033[1:32m:\033[0m%-11s\033[32m[✔]\033[0m\n"
 
 debug: CC := clang
-debug: DEBUG := -fsanitize=address -fno-omit-frame-pointer -fsanitize=undefined 
+debug: DEBUG := -g3 -fsanitize=address -fno-omit-frame-pointer -fsanitize=undefined 
+debug: FLAGS :=
 debug: fclean all
 
 fclean: clean
 	@/bin/rm -f $(NAME)
-	@printf "\e[32m\e[1m[Binary file \e[91m\e[1m$(NAME) \e[32m\e[1mcleaned]\e[m\n"
-#	@$(MAKE) fclean -C $(LIBFTDIR)
+	@printf  "\033[1:32mCleaning binary -------> \033[91m$(NAME)\033[0m\033[1:32m:\033[0m%-11s\033[32m[✔]\033[0m\n"
 
 libft:
 	@$(MAKE) -C $(LIBFTDIR)
@@ -93,9 +93,12 @@ libft:
 noflags: FLAGS :=
 noflags: re
 
+purge: fclean
+	@$(MAKE) fclean -C $(LIBFTDIR)
+
 re: fclean all
 
-.PHONY: all cat clean debug fclean libft noflags re
+.PHONY: all cat clean debug fclean libft noflags purge re
 
 #################
 ##  WITH LOVE  ##
