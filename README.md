@@ -2,7 +2,7 @@
 
 A robust file browser and manager in the terminal.
 
-![](https://github.com/jon-finkel/blob/master/ft_select/ft_select.gif)
+![](https://github.com/jon-finkel/ft_select/blob/master/ft_select.gif)
 
 ## About
 
