@@ -22,6 +22,7 @@ A basic usage would involve at least one argument:
 each selection, the cursor will automatically position itself on the next element.
 * You can validate the selection with the `return` key, the list of choices will
 be sent back to the shell. This allows other programs to use the output of the program as their input. i.e: rm `./ft_select file1 file2 file3`
+* Dynamic search: search for a file by typing it's name. If it is found, cursor will be placed on it automatically.
 * Re-organizes the display on window resize.
 * Exits on `ESC` key
 * Displays keybinds on `TAB` key
