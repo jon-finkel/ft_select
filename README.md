@@ -6,9 +6,13 @@ A robust file browser and manager in the terminal.
 
 ## About
 
-[ft_select][2]is the third project of the Unix branch at [42][1]. The goal for this project is to learn more about event-driven programming using the termcaps library.
+[ft_select][2] is the third project of the Unix branch at [42][1]. The goal for this project is to learn more about event-driven programming using the termcaps library.
 
-### Running
+## Installation
+
+`make`
+
+## Running
 
 A basic usage would involve at least one argument:
 
@@ -36,6 +40,10 @@ be sent back to the shell. This allows other programs to use the output of the p
 
 * List will be scrollable if it can't fit inside the window.
 * Be able to open directories on the fly and go to parent directory.
+
+### Final Mark
+
+`116/119`
 
 [1]: http://42.fr "42 Paris"
 [2]: https://github.com/jon-finkel/ft_select/blob/master/project_instructions/ft_select.en.pdf "ft_select"
