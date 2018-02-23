@@ -43,7 +43,7 @@ be sent back to the shell. This allows other programs to use the output of the p
 
 ### Final Mark
 
-`116/119`
+`116/120`
 
 [1]: http://42.fr "42 Paris"
 [2]: https://github.com/jon-finkel/ft_select/blob/master/project_instructions/ft_select.en.pdf "ft_select"
