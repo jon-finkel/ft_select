@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/28 14:03:16 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/06 15:32:15 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/26 21:42:25 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int			remove_element(t_data *data, int *nb)
 	ft_strdel(&data->string);
 	if (*nb > 0)
 	{
-		FAILZ(data->string = ft_strnew(0), -1);
+		data->string = ft_strnew(0);
 		space = false;
 		k = -1;
 		while (++k < data->argc)
@@ -33,8 +33,7 @@ static int			remove_element(t_data *data, int *nb)
 				if (space == true)
 					ft_strcat(buff, " ");
 				ft_strcat(buff, data->argv[k]);
-				FAILZ(data->string = ft_strjoin(data->string, buff, true),\
-					-1);
+				data->string = ft_strjoin(data->string, buff, true);
 				space = true;
 			}
 	}
@@ -47,22 +46,22 @@ static int			toggle_elem(t_data *data, int *nb)
 
 	ft_memset(buff, '\0', MAXPATHLEN + 1024);
 	if (data->select[data->pos] == true)
-		EPICFAILZ(remove_element(data, nb), -1);
+		remove_element(data, nb);
 	else
 	{
 		*nb += 1;
 		if (*nb == 1)
-			FAILZ(data->string = ft_strdup(data->argv[data->pos]), -1);
+			data->string = ft_strdup(data->argv[data->pos]);
 		else
 		{
 			ft_strcat(buff, " ");
 			ft_strcat(buff, data->argv[data->pos]);
-			FAILZ(data->string = ft_strjoin(data->string, buff, true), -1);
+			data->string = ft_strjoin(data->string, buff, true);
 		}
 		data->select[data->pos] = true;
 	}
 	flag_underline(E_ENABLE, data->fd);
-	EPICFAILZ(color_output(data, data->pos, data->x, data->y), -1);
+	color_output(data, data->pos, data->x, data->y);
 	flag_underline(E_DISABLE, data->fd);
 	input_arrow(data, "\033[B");
 	KTHXBYE;
@@ -73,7 +72,7 @@ static int			delete_element(t_data *data, int *nb)
 	int		k;
 
 	if (data->select[data->pos] == true)
-		EPICFAILZ(remove_element(data, nb), -1);
+		remove_element(data, nb);
 	k = data->pos;
 	while (data->argv[++k])
 	{
@@ -82,9 +81,11 @@ static int			delete_element(t_data *data, int *nb)
 	}
 	data->argv[k] = NULL;
 	--data->argc;
+	if (!data->argc)
+		restore_config(data, E_EXIT_SUCCESS);
 	if (data->pos)
 		--data->pos;
-	EPICFAILZ(check_window_size(data), -1);
+	check_window_size(data);
 	KTHXBYE;
 }
 
@@ -101,14 +102,14 @@ static int			full_toggle(t_data *data, int *nb, t_flag flag, int k)
 	}
 	else
 	{
-		FAILZ(data->string = ft_strdup(data->argv[++k]), -1);
+		data->string = ft_strdup(data->argv[++k]);
 		while (++k < data->argc)
 		{
 			data->select[k] = true;
 			ft_memset(buff, '\0', 1024);
 			ft_strcat(buff, " ");
 			ft_strcat(buff, data->argv[k]);
-			FAILZ(data->string = ft_strjoin(data->string, buff, true), -1);
+			data->string = ft_strjoin(data->string, buff, true);
 		}
 		data->select[0] = true;
 		*nb = k;
@@ -125,21 +126,21 @@ int					loop(t_data *data)
 	while (101010)
 	{
 		ft_memset(buff, '\0', 5);
-		EPICFAILZ(read(STDIN_FILENO, buff, 4), -1);
+		read(STDIN_FILENO, buff, 4);
 		if (*buff == 127 || ft_strnequ(buff, "\033[3~", 4))
 			delete_element(data, &nb);
 		else if ((*buff == 9 && toggle_help(data) == -1) || *buff == 10)
-			IMOUTTAYR ;
+			NOMOAR;
 		else if (ft_strequ(buff, "\033") || (ft_strnequ(buff, "\033", 1)
 			&& input_arrow(data, buff) == -1))
-			IMOUTTAYR ;
+			NOMOAR;
 		else if ((*buff == 42 && full_toggle(data, &nb, E_ENABLE, -1) == -1)
 			|| (*buff == 92 && full_toggle(data, &nb, E_DISABLE, -1) == -1))
-			IMOUTTAYR ;
+			NOMOAR;
 		else if (lettercheck(*buff) && dynamic_search(data, buff, 0) == -1)
-			IMOUTTAYR ;
+			NOMOAR;
 		else if ((*buff == 10 || *buff == 32) && toggle_elem(data, &nb) == -1)
-			IMOUTTAYR ;
+			NOMOAR;
 	}
 	GIMME(restore_config(data, (*buff == 10 ? E_OUTPUT : E_EXIT_SUCCESS)));
 }

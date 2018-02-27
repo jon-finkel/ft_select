@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/31 10:17:22 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/06 15:24:19 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/26 21:41:18 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,18 @@ static int			restore_termios(t_data *data, t_flag flag)
 	{
 		buff[0] = data->oldcc->c_cc[VSUSP];
 		buff[1] = '\0';
-		EPICFAILZ(ioctl(data->fd, TIOCSTI, buff), -1);
+		ioctl(data->fd, TIOCSTI, buff);
 	}
-	EPICFAILZ(tcsetattr(data->fd, TCSANOW, data->oldcc), -1);
+	tcsetattr(data->fd, TCSANOW, data->oldcc);
 	ft_memdel((void **)&data->oldcc);
-	FAILZ(str = tgetstr("ve", NULL), -1);
+	str = tgetstr("ve", NULL);
 	ft_putstr_fd(str, data->fd);
 	KTHXBYE;
 }
 
 int					restore_config(t_data *data, t_flag flag)
 {
-	EPICFAILZ(restore_termios(data, flag), -1);
+	restore_termios(data, flag);
 	ft_putstr_fd("\033[?1049l", data->fd);
 	if (flag == E_OUTPUT)
 		ft_putendl_fd(data->string, STDOUT_FILENO);

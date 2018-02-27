@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:43:32 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/06 15:23:47 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/26 21:35:01 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,18 @@ int					main(int argc, char *argv[])
 		KTHXBYE;
 	}
 	setlocale(LC_ALL, "");
-	FAILZ(g_data = (t_data *)malloc(sizeof(t_data)), -1);
-	FAILZ(g_data->select = (bool *)malloc(sizeof(bool) * (argc - 1)), -1);
+	g_data = (t_data *)ft_memalloc(sizeof(t_data));
+	g_data->select = (bool *)ft_memalloc(sizeof(bool) * (argc - 1));
 	if (isatty(g_data->fd = open("/dev/tty", O_RDWR)) == false)
 		ft_fatal("not a terminal type device");
 	g_data->string = NULL;
 	g_data->oldcc = NULL;
 	g_data->argv = argv + 1;
 	g_data->argc = argc - 1;
-	g_data->pos = 0;
-	g_data->curr_column = 0;
 	g_data->width = 1;
 	g_data->status = E_REGULAR;
 	while (--argc)
-	{
 		g_data->width = MAX(g_data->width, ft_strlen(argv[argc]) + 1);
-		g_data->select[argc - 1] = false;
-	}
 	set_signals();
 	GIMME(initialize_termios(g_data));
 }

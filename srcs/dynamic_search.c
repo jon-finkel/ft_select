@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 15:27:25 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/06 15:12:08 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/26 21:37:13 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ static int			find_file(t_data *data, const char *move, const char *file)
 	while (++k < data->argc)
 		if (ft_strnequ(file, data->argv[k], ft_strlen(file)))
 		{
-			EPICFAILZ(color_output(data, data->pos, data->x, data->y), -1);
+			color_output(data, data->pos, data->x, data->y);
 			data->pos = k;
 			get_coordinates(data);
 			flag_underline(E_ENABLE, data->fd);
-			EPICFAILZ(color_output(data, data->pos, data->x, data->y), -1);
+			color_output(data, data->pos, data->x, data->y);
 			flag_underline(E_DISABLE, data->fd);
 			KTHXBYE;
 		}
-	FAILZ(str = tgoto(move, 2, data->rows + (data->extra ? 6 : 5)), -1);
+	str = tgoto(move, 2, data->rows + (data->extra ? 6 : 5));
 	ft_dprintf(data->fd, "%sFILE NOT FOUND !", str);
 	KTHXBYE;
 }
@@ -47,12 +47,12 @@ static int			search_letter(t_data *data, char *file, const char buff,
 	else
 		file[++(*x) - 1] = buff;
 	file[*x] = '\0';
-	FAILZ(move = tgetstr("cm", NULL), -1);
-	FAILZ(str = tgoto(move, 2, data->rows + (data->extra ? 5 : 4)), -1);
+	move = tgetstr("cm", NULL);
+	str = tgoto(move, 2, data->rows + (data->extra ? 5 : 4));
 	ft_putstr_fd(str, data->fd);
-	FAILZ(str = tgetstr("cd", NULL), -1);
+	str = tgetstr("cd", NULL);
 	ft_dprintf(data->fd, "%s{17H}search file: %s{eoc}", str, file);
-	EPICFAILZ(find_file(data, move, file), -1);
+	find_file(data, move, file);
 	KTHXBYE;
 }
 
@@ -65,17 +65,17 @@ int					dynamic_search(t_data *data, char *buff, int x)
 	while (101010)
 	{
 		if (ft_strequ(buff, "\033") || ft_strequ(buff, "\040"))
-			IMOUTTAYR;
+			NOMOAR;
 		else if (ft_strequ(buff, "\011"))
 			GIMME(toggle_help(data));
 		else if (*buff == '\033' && (ret = input_arrow(data, buff)) < INT_MAX)
-			IMOUTTAYR;
+			NOMOAR;
 		else if ((ret = search_letter(data, file, *buff, &x)) == -1
 			|| ret == 255)
-			IMOUTTAYR;
+			NOMOAR;
 		ft_memset(buff, '\0', 4);
-		EPICFAILZ(read(STDIN_FILENO, buff, 3), -1);
+		read(STDIN_FILENO, buff, 3);
 	}
-	EPICFAILZ(check_window_size(data), -1);
+	check_window_size(data);
 	GIMME(ret);
 }

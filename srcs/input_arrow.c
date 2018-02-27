@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/27 12:06:55 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/06 15:13:47 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/26 21:38:44 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int			move_cursor_up(t_data *data)
 {
-	EPICFAILZ(color_output(data, data->pos, data->x, data->y), -1);
+	color_output(data, data->pos, data->x, data->y);
 	if (!data->pos)
 		data->pos = data->argc - 1;
 	else
@@ -25,7 +25,7 @@ static int			move_cursor_up(t_data *data)
 
 static int			move_cursor_down(t_data *data)
 {
-	EPICFAILZ(color_output(data, data->pos, data->x, data->y), -1);
+	color_output(data, data->pos, data->x, data->y);
 	if (data->pos == data->argc - 1)
 		data->pos = 0;
 	else
@@ -36,7 +36,7 @@ static int			move_cursor_down(t_data *data)
 
 static int			move_cursor_right(t_data *data)
 {
-	EPICFAILZ(color_output(data, data->pos, data->x, data->y), -1);
+	color_output(data, data->pos, data->x, data->y);
 	if ((data->extra - 1 == data->curr_column && data->y - 2 == data->rows)
 		|| (!data->extra && data->pos == data->argc - 1))
 		data->pos = 0;
@@ -50,7 +50,7 @@ static int			move_cursor_right(t_data *data)
 
 static int			move_cursor_left(t_data *data)
 {
-	EPICFAILZ(color_output(data, data->pos, data->x, data->y), -1);
+	color_output(data, data->pos, data->x, data->y);
 	if (!data->pos && !data->extra)
 		move_cursor_up(data);
 	else if (!data->pos && data->extra)
@@ -79,7 +79,7 @@ int					input_arrow(t_data *data, const char *const buff)
 		else if (buff[2] == 'D')
 			move_cursor_left(data);
 		flag_underline(E_ENABLE, data->fd);
-		EPICFAILZ(color_output(data, data->pos, data->x, data->y), -1);
+		color_output(data, data->pos, data->x, data->y);
 		flag_underline(E_DISABLE, data->fd);
 	}
 	KTHXBYE;
