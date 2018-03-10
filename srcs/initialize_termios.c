@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 18:23:56 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/03/10 23:12:03 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/03/10 23:22:55 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,5 @@ int					initialize_termios(t_data *data)
 	ft_putstr_fd("\033[?1049h", data->fd);
 	str = tgetstr("vi", NULL);
 	ft_putstr_fd(str, data->fd);
-	check_window_size(data);
-	GIMME(loop(data));
+	GIMME(check_window_size(data));
 }

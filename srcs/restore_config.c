@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/31 10:17:22 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/03/10 22:55:48 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/03/10 23:21:08 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static int			restore_termios(t_data *data, t_flag flag)
 {
 	char		buff[2];
-	char		*str;
 
 	if (flag == E_SUSPEND)
 	{
@@ -25,8 +24,7 @@ static int			restore_termios(t_data *data, t_flag flag)
 	}
 	tcsetattr(data->fd, TCSANOW, data->oldcc);
 	ft_memdel((void **)&data->oldcc);
-	str = tgetstr("ve", NULL);
-	ft_putstr_fd(str, data->fd);
+	ft_putstr_fd(tgetstr("ve", NULL), data->fd);
 	KTHXBYE;
 }
 

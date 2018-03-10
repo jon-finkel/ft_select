@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:43:32 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/03/10 23:04:31 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/03/10 23:22:37 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,6 @@ int					main(int argc, const char *argv[])
 	g_data->status = E_REGULAR;
 	get_width(g_data);
 	set_signals();
-	GIMME(initialize_termios(g_data));
+	initialize_termios(g_data);
+	GIMME(loop(g_data));
 }
