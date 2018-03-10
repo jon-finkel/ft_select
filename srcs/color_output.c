@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/27 20:30:34 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/26 21:35:36 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/03/10 19:37:30 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int					color_output(t_data *data, int k, int x, int y)
 		flag_reverse_video(E_ENABLE, data->fd);
 	move = tgetstr("cm", NULL);
 	str = tgoto(move, x, y);
-	ft_sprintf(file, "%v/%s", "PWD", data->argv[k]);
+	ft_snprintf(file, MAXPATHLEN + 1048, "%v/%s", "PWD", data->argv[k]);
 	if (ft_strchr(data->argv[k], '/'))
 		x = lstat(data->argv[k], &w_stat);
 	else

@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/28 14:03:16 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/26 21:42:25 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/03/10 20:46:11 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ static int			delete_element(t_data *data, int *nb)
 		restore_config(data, E_EXIT_SUCCESS);
 	if (data->pos)
 		--data->pos;
+	get_width(data);
 	check_window_size(data);
 	KTHXBYE;
 }
@@ -125,6 +126,8 @@ int					loop(t_data *data)
 
 	while (101010)
 	{
+		if (data->lock)
+			MOAR;
 		ft_memset(buff, '\0', 5);
 		read(STDIN_FILENO, buff, 4);
 		if (*buff == 127 || ft_strnequ(buff, "\033[3~", 4))

@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 18:44:05 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/06 15:07:51 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/03/10 20:45:57 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef enum		e_flag
 
 typedef struct		s_data
 {
+	bool			lock;
 	bool			*select;
 	char			*string;
 	char			**argv;
@@ -66,6 +67,7 @@ int					dynamic_search(t_data *data, char *buff, int x);
 int					flag_reverse_video(t_flag flag, const int fd);
 int					flag_underline(t_flag flag, const int fd);
 void				get_coordinates(t_data *data);
+void				get_width(t_data *data);
 int					initialize_termios(t_data *data);
 int					input_arrow(t_data *data, const char *const buff);
 int					lettercheck(char c);

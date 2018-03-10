@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 18:23:56 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/26 21:38:30 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/03/10 23:12:03 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ static void			set_signals(void)
 {
 	struct sigaction		s;
 
-	s.sa_handler = &signal_handler;
+	s.sa_handler = signal_handler;
 	s.sa_mask = 0;
-	s.sa_flags = 0;
+	s.sa_flags = SA_NODEFER;
 	sigaction(SIGCONT, &s, NULL);
 	s.sa_flags = SA_RESETHAND;
 	sigaction(SIGTSTP, &s, NULL);
@@ -33,6 +33,8 @@ int					initialize_termios(t_data *data)
 	set_signals();
 	if (!(termtype = getenv("TERM")))
 		ft_fatal("specify a terminal type with `setenv TERM`");
+	if (!ft_strequ(termtype, "xterm-256color"))
+		ft_fatal("terminal type not supported");
 	if (tgetent(NULL, termtype) < 1)
 		ft_fatal("terminal type is not defined");
 	tcgetattr(data->fd, &term);

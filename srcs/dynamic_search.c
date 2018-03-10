@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 15:27:25 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/26 21:37:13 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/03/10 20:40:00 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int					dynamic_search(t_data *data, char *buff, int x)
 	ret = 0;
 	while (101010)
 	{
+		if (data->lock)
+			MOAR;
 		if (ft_strequ(buff, "\033") || ft_strequ(buff, "\040"))
 			NOMOAR;
 		else if (ft_strequ(buff, "\011"))
