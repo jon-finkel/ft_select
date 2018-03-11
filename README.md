@@ -10,7 +10,7 @@ A robust file browser and manager in the terminal.
 
 ## Installation
 
-`make`
+`cd libft ; git pull origin master ; cd .. ; make`
 
 ## Running
 
