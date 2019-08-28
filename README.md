@@ -1,4 +1,4 @@
-# FT_SELECT - @42Born2Code
+# FT SELECT - @42Born2Code
 
 A robust file browser and manager in the terminal.
 
